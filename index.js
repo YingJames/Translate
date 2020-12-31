@@ -1,7 +1,6 @@
 const LanguageTranslatorV3 = require("ibm-watson/language-translator/v3");
 const { IamAuthenticator } = require("ibm-watson/auth");
 const express = require("express");
-const express = require("express");
 const app = express();
 
 // IF anybody wants to connect, you need to start listening
