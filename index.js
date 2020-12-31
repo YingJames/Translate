@@ -11,9 +11,12 @@ app.use(express.static("public"));
 
 // Receive chinese search
 app.post("/api", (request, response) => {
-  // console.log('request on index.js:', request);
-  const query = request;
-  Translate(query);
+  const chineseInput = request.body.query
+  response.json = ({
+    status: "success",
+    search: chineseInput,
+  });
+  Translate(chineseInput);
 });
 
 function Translate(chineseInput) {
