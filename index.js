@@ -6,7 +6,7 @@ const app = express();
 // IF anybody wants to connect, you need to start listening
 app.listen(3000, () => console.log("listening on Port 3000"));
 app.use(express.static("public"));
-
+app.use(express.json({ limit: '1mb' }));
 // ~~~~~~~~~~~~~
 
 // Receive chinese search
