@@ -38,18 +38,17 @@ function Translate(chineseInput) {
     .translate(translateParams)
     .then(response => JSON.stringify(response, null, 2))
     .then(jsonStringify => JSON.parse(jsonStringify))
-    .then(translationResult =>
-      console.log(translationResult.result.translations[0].translation)
-    )
+    .then(translationResult => {
+      return translationResult.result.translations[0].translation
+    })
     .then(english => {
-      let translationResult = document.getElementById("translationResult");
-      translationResult.innerHTML = `${translateParams.text} => ${english}`;
-      addGIF(english);
+      let translationResult = `${chineseInput} => ${english}`;
+      getGiphyURL(english, translationResult);
     })
     .catch(err => console.log("error:", err));
 }
 
-function addGIF(query) {
+function getGiphyURL(query, translationResult) {
   const apiKey = "i0YNx60dA7EtWa0WIt3490EklKT1h7Ib";
   const limit = "1";
   const offset = "0";
