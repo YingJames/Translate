@@ -1,3 +1,3 @@
 # Translate
 
-This project aims to create a means to translate chinese to english, while also automatically applying a gif from the GIPHY API 
+This project aims to create a means to translate chinese to english using the IBM Watson Translator API, while also automatically creating a gif from the GIPHY API
