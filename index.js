@@ -34,12 +34,17 @@ async function Translate(chineseInput) {
     text: chineseInput,
     modelId: "zh-en",
   };
-
-  let translate = await languageTranslator.translate(translateParams);
-  let jsonStringify = await JSON.stringify(translate, null, 2);
-  let jsonParse = await JSON.parse(jsonStringify);
-  let translationResult = await jsonParse.result.translation[0].translation;
-  return translationResult;
+  const translationResult = await languageTranslator.translate(translateParams);
+  const jsonStringify = await JSON.stringify(translationResult, null, 2);
+  const jsonParse = await JSON.parse(jsonStringify);
+  const englishText = await jsonParse.result.translation[0].translation;
+  return englishText;
+  // return languageTranslator
+  //   .translate(translateParams)
+  //   .then(translationResult => JSON.stringify(translationResult, null, 2))
+  //   .then(jsonStringify => JSON.parse(jsonStringify)
+  //   .then(jsonParse => jsonParse.result.translation[0].translation)
+  //   .catch(err => console.log('Could not translate:', err))
 }
 
 function getGiphyURL(query, translationResult) {
