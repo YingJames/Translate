@@ -1,4 +1,3 @@
-
 function buttonClicked() {
   const clickButton = document.getElementById("btn");
   clickButton.addEventListener("click", async () => {
@@ -7,8 +6,8 @@ function buttonClicked() {
     const data = { query };
     const options = {
       method: "POST",
-      headers: { 
-        "Content-Type": "application/json"
+      headers: {
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     };
@@ -19,11 +18,12 @@ function buttonClicked() {
     createResponse(json);
   });
 }
-buttonClicked();
 
-function createResponse(json) {
-  let translation = json.translation;
-  // Gets rid of the period in translation
-  let translation = translation.slice(0, translation.length-1);
-  
+function createResponse(result) {
+  const translationResult = document.getElementById("translationResult");
+  translationResult.textContent = `${result.search} => ${translation}`;
+  const gif = document.getElementById("giphy");
+  gif.src = result.gifURL;
 }
+
+buttonClicked();
