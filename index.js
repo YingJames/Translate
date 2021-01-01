@@ -1,25 +1,26 @@
 const LanguageTranslatorV3 = require("ibm-watson/language-translator/v3");
 const { IamAuthenticator } = require("ibm-watson/auth");
+const fetch = require("node-fetch");
 const express = require("express");
 const app = express();
 
 // IF anybody wants to connect, you need to start listening
 app.listen(3000, () => console.log("listening on Port 3000"));
 app.use(express.static("public"));
-app.use(express.json({ limit: '1mb' }));
+app.use(express.json({ limit: "1mb" }));
 // ~~~~~~~~~~~~~
 
 // Receive chinese search
-app.post("/api", (request, response) => {
-  const chineseInput = request.body.query
-  response.json = ({
+app.post("/search", (request, response) => {
+  const chineseInput = request.body.query;
+  response.json = {
     status: "success",
     search: chineseInput,
-  });
-  Translate(chineseInput);
+  };
+  const 
 });
 
-function Translate(chineseInput) {
+async function Translate(chineseInput) {
   const languageTranslator = new LanguageTranslatorV3({
     version: "2018-05-01",
     authenticator: new IamAuthenticator({
@@ -34,18 +35,11 @@ function Translate(chineseInput) {
     modelId: "zh-en",
   };
 
-  languageTranslator
-    .translate(translateParams)
-    .then(response => JSON.stringify(response, null, 2))
-    .then(jsonStringify => JSON.parse(jsonStringify))
-    .then(translationResult => {
-      return translationResult.result.translations[0].translation
-    })
-    .then(english => {
-      let translationResult = `${chineseInput} => ${english}`;
-      getGiphyURL(english, translationResult);
-    })
-    .catch(err => console.log("error:", err));
+  let translate = await languageTranslator.translate(translateParams);
+  let jsonStringify = await JSON.stringify(translate, null, 2);
+  let jsonParse = await JSON.parse(jsonStringify);
+  let translationResult = await jsonParse.result.translation[0].translation;
+  return translationResult;
 }
 
 function getGiphyURL(query, translationResult) {
@@ -54,12 +48,22 @@ function getGiphyURL(query, translationResult) {
   const offset = "0";
   const rating = "g";
   const giphyAPI = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limit}&offset=${offset}&rating=${rating}&lang=en`;
+
   getGIF(giphyAPI)
     .then(url => {
-      const gif = document.getElementById("giphy");
-      gif.src = url;
+      const data = { translationResult, url };
+      console.log(data);
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      };
     })
-    .catch(err => console.error("You have an error"));
+    .catch(err => {
+      console.error("There is no gif for this search term:", err);
+    });
 }
 
 async function getGIF(giphyAPI) {

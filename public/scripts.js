@@ -12,8 +12,10 @@ function buttonClicked() {
       body: JSON.stringify(data),
     };
     // send chinese search to ibm-translate api in index.js
-    const response = fetch("/api", options);
+    const response = fetch("/search", options);
+    console.log('response', response);
   });
 }
+
 
 buttonClicked();
