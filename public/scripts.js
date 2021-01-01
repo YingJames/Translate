@@ -21,7 +21,7 @@ function buttonClicked() {
 
 function createResponse(result) {
   const translationResult = document.getElementById("translationResult");
-  translationResult.textContent = `${result.search} => ${translation}`;
+  translationResult.textContent = `${result.search} => ${result.translation}`;
   const gif = document.getElementById("giphy");
   gif.src = result.gifURL;
 }
