@@ -15,11 +15,12 @@ app.post("/search", async (request, response) => {
   const chineseInput = request.body.query;
   const englishText = await Translate(chineseInput);
   const gifURL = await getGiphyURL(englishText);
-  console.log(gifURL);
+  
   response.json({
     status: "success",
     search: chineseInput,
     translation: englishText,
+    gifURL: gifURL,
   });
   // const gifURL = await getGiphyURL(englishText)
 });
