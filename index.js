@@ -11,14 +11,17 @@ app.use(express.json({ limit: "1mb" }));
 // ~~~~~~~~~~~~~
 
 // Receive chinese search
-app.post("/search", (request, response) => {
+app.post("/search", async (request, response) => {
   const chineseInput = request.body.query;
-  response.json = {
+  const englishText = await Translate(chineseInput);
+  const gifURL = await getGiphyURL(englishText);
+  console.log(gifURL);
+  response.json({
     status: "success",
     search: chineseInput,
-  };
-
-  const englishText = Translate(chineseInput);
+    translation: englishText,
+  });
+  // const gifURL = await getGiphyURL(englishText)
 });
 
 async function Translate(chineseInput) {
@@ -38,43 +41,21 @@ async function Translate(chineseInput) {
   const translationResult = await languageTranslator.translate(translateParams);
   const jsonStringify = await JSON.stringify(translationResult, null, 2);
   const jsonParse = await JSON.parse(jsonStringify);
-  const englishText = await jsonParse.result.translation[0].translation;
+  const englishText = await jsonParse.result.translations[0].translation;
   return englishText;
-  // return languageTranslator
-  //   .translate(translateParams)
-  //   .then(translationResult => JSON.stringify(translationResult, null, 2))
-  //   .then(jsonStringify => JSON.parse(jsonStringify)
-  //   .then(jsonParse => jsonParse.result.translation[0].translation)
-  //   .catch(err => console.log('Could not translate:', err))
 }
 
-async function getGiphyURL(query, translationResult) {
+async function getGiphyURL(query) {
   const apiKey = "i0YNx60dA7EtWa0WIt3490EklKT1h7Ib";
   const limit = "1";
   const offset = "0";
   const rating = "g";
   const giphyAPI = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limit}&offset=${offset}&rating=${rating}&lang=en`;
 
-  getGIF(giphyAPI)
-    .then(url => {
-      const data = { translationResult, url };
-      console.log(data);
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      };
-    })
-    .catch(err => {
-      console.error("There is no gif for this search term:", err);
-    });
-}
-
-async function getGIF(giphyAPI) {
   const response = await fetch(giphyAPI);
   const json = await response.json();
-  const url = json.data[0].images["original"].url;
+  const url = await json.data[0].images["original"].url;
   return url;
 }
+
+
