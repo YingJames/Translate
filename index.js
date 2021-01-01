@@ -17,8 +17,10 @@ app.post("/search", (request, response) => {
     status: "success",
     search: chineseInput,
   };
-
+  
   const englishText = Translate(chineseInput);
+  
+
 });
 
 async function Translate(chineseInput) {
@@ -48,7 +50,7 @@ async function Translate(chineseInput) {
   //   .catch(err => console.log('Could not translate:', err))
 }
 
-function getGiphyURL(query, translationResult) {
+async function getGiphyURL(query, translationResult) {
   const apiKey = "i0YNx60dA7EtWa0WIt3490EklKT1h7Ib";
   const limit = "1";
   const offset = "0";
