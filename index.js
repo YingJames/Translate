@@ -17,7 +17,8 @@ app.post("/search", (request, response) => {
     status: "success",
     search: chineseInput,
   };
-  const 
+
+  const englishText = Translate(chineseInput);
 });
 
 async function Translate(chineseInput) {
