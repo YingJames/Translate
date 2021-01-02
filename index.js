@@ -1,6 +1,7 @@
 const LanguageTranslatorV3 = require("ibm-watson/language-translator/v3");
 const { IamAuthenticator } = require("ibm-watson/auth");
 const fetch = require("node-fetch");
+require("dotenv").config();
 const express = require("express");
 const app = express();
 
