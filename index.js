@@ -30,7 +30,7 @@ async function Translate(chineseInput) {
   const languageTranslator = new LanguageTranslatorV3({
     version: "2018-05-01",
     authenticator: new IamAuthenticator({
-      apikey: "0X3TZ4DS7Ck7osm8Yh7FnCeRpFZ6wAhqisW8zuStG4bW",
+      apikey: process.env.IBM_KEY,
     }),
     serviceUrl:
       "https://api.us-south.language-translator.watson.cloud.ibm.com/instances/5fa8162f-5fa2-4751-9143-d525052ae610",
@@ -48,7 +48,7 @@ async function Translate(chineseInput) {
 }
 
 async function getGiphyURL(query) {
-  const apiKey = "i0YNx60dA7EtWa0WIt3490EklKT1h7Ib";
+  const apiKey = process.env.GIPHY_KEY;
   const limit = "1";
   const offset = "0";
   const rating = "g";
