@@ -6,8 +6,8 @@ const express = require("express");
 const app = express();
 
 // IF anybody wants to connect, you need to start listening
-const port = 8000;
-app.listen(port, '0.0.0.0', () => console.log(`listening on Port ${port}`));
+const port = process.env.PORT;
+app.listen(port=8000, '0.0.0.0', () => console.log(`listening on Port ${port}`));
 app.use(express.static("public"));
 app.use(express.json({ limit: "1mb" }));
 // ~~~~~~~~~~~~~
